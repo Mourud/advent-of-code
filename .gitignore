@@ -38,3 +38,5 @@ _ReSharper*/
 
 *.csproj
 input.txt
+
+.DS_Store
