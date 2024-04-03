@@ -40,3 +40,5 @@ _ReSharper*/
 input.txt
 
 .DS_Store
+
+.fake
