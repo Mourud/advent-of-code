@@ -1,13 +1,8 @@
-import os
-import sys
-import requests
 from input_fetcher import fetch_input
 
 
 def main():
-    script_name = os.path.basename(sys.argv[0]).split('.py')[0]
-    day = script_name.split('day')[1]
-    response = fetch_input(day)
+    response = fetch_input(__file__)
     if response is None:
         return
     formatted_response = formatResponse(response)
