@@ -50,4 +50,4 @@ def formatResponse(content) -> list[list]:
         lists[i%2].append(int(number))
     return lists
 
-print(main())
+main()
