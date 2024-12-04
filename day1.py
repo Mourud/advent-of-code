@@ -1,13 +1,13 @@
 import os
+import sys
 import requests
+from input_fetcher import fetch_input
 
 
 def main():
-    url = "https://adventofcode.com/2024/day/1/input"
-    cookie = os.getenv("AOC_cookie")
-    headers = {"Cookie" : f"session={cookie}",
-                                "User-Agent": "Python Script - Advent of Code Input Fetcher"}
-    response = getResponse(url, headers)
+    script_name = os.path.basename(sys.argv[0]).split('.py')[0]
+    day = script_name.split('day')[1]
+    response = fetch_input(day)
     if response is None:
         return
     formatted_response = formatResponse(response)
@@ -34,14 +34,6 @@ def part2(formatted_response):
                 sim += elem_l
     return sim
 
-def getResponse(url, headers):
-    try:
-        response = requests.get(url, headers = headers)
-        response.raise_for_status()
-        return response.text
-    except requests.exceptions.RequestException as e:
-        print(f"Error: {e}")
-        return None
 
 def formatResponse(content) -> list[list]:
     numbers = content.split()
