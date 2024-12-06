@@ -16,15 +16,21 @@ def part1(input):
 
 def find_XMAS_diagonal(matrix):
     total = 0
-    for i in range(len(matrix) - 4):
-        for j in range(len(matrix[0]) - 4):
+    for i in range(len(matrix) - 3):
+        for j in range(len(matrix[0]) - 3):
             X = matrix[i][j]
             M = matrix[i+1][j+1]
             A = matrix[i+2][j+2]
             S = matrix[i+3][j+3]
+            x = matrix[i][j+3]
+            m = matrix[i+1][j+2]
+            a = matrix[i+2][j+1]
+            s = matrix[i+3][j]
+
             if is_diagonal_xmas(X,M,A,S):
                 total +=1
-            
+            if is_diagonal_xmas(x,m,a,s):
+                total+=1
 
     return total
 
