@@ -1,8 +1,10 @@
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 import requests
 
 def fetch_input(filename):
+    load_dotenv()
 
     stripped_filename = os.path.splitext(os.path.basename(filename))[0]
     year = os.path.basename(Path(filename).parent)
@@ -16,7 +18,7 @@ def fetch_input(filename):
         
     directory.mkdir(parents = True, exist_ok= True)
     url = f"https://adventofcode.com/{year}/day/{day}/input"
-    cookie = os.getenv("AOC_cookie")
+    cookie = os.getenv("AOC_COOKIE")
     headers = {"Cookie" : f"session={cookie}",
                                 "User-Agent": "Python Script - Advent of Code Input Fetcher"}
     try:
