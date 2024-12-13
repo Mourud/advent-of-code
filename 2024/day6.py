@@ -31,47 +31,42 @@ def find_guard(input):
             
 def guard_sim(guard, input):
     unique_pos = set()
-    x = guard[0]
-    y = guard[1]
+    y = guard[0]
+    x = guard[1]
+    dir = guard[2]
     while (True):
-        xxxxxxxxxxxxxxxxxxx = input[x+0][y-2:y] + [guard[2]] + input[x][y+1:y+3]
-        unique_pos.add((x,y))
-        if guard[2] == 'v':
-            x += 1
-            guard = (x,y,guard[2])
-            if not guard_on_map(guard, input):
-                return len(unique_pos) 
-            if (input[x][y] == '#'):
-                x -=1
-                guard = (x,y,'<')
-                
-        elif guard[2] == '<':
-            y -= 1
-            guard = (x,y,guard[2])
-            if not guard_on_map(guard, input):
-                return len(unique_pos) 
-            if (input[x][y] == '#'):
-                y += 1
-                guard = (x,y,'^')
-                
-        elif guard[2] == '^':
-            x -= 1
-            guard = (x,y,guard[2])
-            if not guard_on_map(guard, input):
-                return len(unique_pos) 
-            if (input[x][y] == '#'):
-                x += 1
-                guard = (x,y,'>')
-                
-        elif guard[2] == '>':
+        # xxxxxxxxxxxxxxxxxxx = input[x+0][y-2:y] + [guard[2]] + input[x][y+1:y+3]
+        unique_pos.add((y,x))
+        if dir == 'v':
             y += 1
-            guard = (x,y,guard[2])
-            if not guard_on_map(guard, input):
+            if not guard_on_map((y,x,dir), input):
                 return len(unique_pos) 
-            if (input[x][y] == '#'):
-                y -= 1
-                guard = (x,y,'v')
+            if (input[y][x] == '#'):
+                y -=1
+                dir = '<'      
+        elif dir == '<':
+            x -= 1
+            if not guard_on_map((x,y,dir), input):
+                return len(unique_pos) 
+            if (input[y][x] == '#'):
+                x += 1
+                dir = '^'
+        elif dir == '^':
+            y -= 1
+            if not guard_on_map((x,y,dir), input):
+                return len(unique_pos) 
+            if (input[y][x] == '#'):
+                y += 1
+                dir = '>'
                 
+        elif dir == '>':
+            x += 1
+            if not guard_on_map((x,y,dir), input):
+                return len(unique_pos) 
+            if (input[y][x] == '#'):
+                x -= 1
+                dir = 'v'
+            
 
 
 def guard_on_map(guard, area):
