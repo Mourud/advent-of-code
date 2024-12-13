@@ -1,3 +1,4 @@
+from copy import deepcopy
 from aoc_input_fetcher import fetch_input
 
 
@@ -20,8 +21,6 @@ def part1(input):
     guard = find_guard(input)
     return guard_sim(guard, input)
     
-
-    pass
 def find_guard(input):
     for i, row in enumerate(input):
         for j, pos in enumerate(row):
@@ -34,11 +33,10 @@ def guard_sim(guard, input):
     x = guard[1]
     dir = guard[2]
     while (True):
-        # xxxxxxxxxxxxxxxxxxx = input[x+0][y-2:y] + [guard[2]] + input[x][y+1:y+3]
         unique_pos.add((y,x))
         if dir == 'v':
             y += 1
-            if not guard_on_map((y,x,dir), input):
+            if not guard_on_map((x,y,dir), input):
                 return len(unique_pos) 
             if (input[y][x] == '#'):
                 y -=1
@@ -69,12 +67,12 @@ def guard_sim(guard, input):
 
 
 def guard_on_map(guard, area):
-    x = guard[0]
-    y = guard[1]
+    y = guard[0]
+    x = guard[1]
 
-    if x > len(area) - 1 or x < 0:
+    if y > len(area) - 1 or y < 0:
         return False
-    if y > len(area[x]) - 1 or y < 0:
+    if x > len(area[y]) - 1 or x < 0:
         return False
     return True
 
@@ -83,19 +81,12 @@ def guard_sim2(guard, input):
     y = guard[0]
     x = guard[1]
     dir = guard[2]
-    time_since_unique = 0
     
     while (True):
-        
-        if time_since_unique > len(unique_pos):
+        pos = (y,x,dir)
+        if pos in unique_pos:
             return 1
-        xxxxxxxxxxxxxxxxxxx = input[y][x-2:x] + [dir] + input[y][x+1:x+3]
-        pos = (y,x)
-        if pos not in unique_pos:
-            time_since_unique = 0
-            unique_pos.add(pos)
-        else:
-            time_since_unique += 1
+        unique_pos.add(pos)
         if dir == 'v':
             y += 1
             if not guard_on_map((y,x,dir), input):
@@ -105,21 +96,21 @@ def guard_sim2(guard, input):
                 dir = '<'      
         elif dir == '<':
             x -= 1
-            if not guard_on_map((x,y,dir), input):
+            if not guard_on_map((y, x, dir), input):
                 return 0
             if (input[y][x] == '#'):
                 x += 1
                 dir = '^'
         elif dir == '^':
             y -= 1
-            if not guard_on_map((x,y,dir), input):
+            if not guard_on_map((y,x, dir), input):
                 return 0
             if (input[y][x] == '#'):
                 y += 1
                 dir = '>'
         elif dir == '>':
             x += 1
-            if not guard_on_map((x,y,dir), input):
+            if not guard_on_map((y, x, dir), input):
                 return 0
             if (input[y][x] == '#'):
                 x -= 1
@@ -127,17 +118,14 @@ def guard_sim2(guard, input):
 
                 
 
-
-
 def part2(input):
     guard = find_guard(input)
     total = 0
     for i, row in enumerate(input):
         for j, pos in enumerate(row):
             if pos not in ['v', '<', '>', '^', '#']:
-                input[i][j] = '#'
-                total += guard_sim2(guard, input)
-
-        
+                copy_matrix = deepcopy(input)
+                copy_matrix[i][j] = '#'
+                total += guard_sim2(guard, copy_matrix)
     return total
 main()
