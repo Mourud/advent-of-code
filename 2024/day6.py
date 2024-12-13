@@ -34,39 +34,43 @@ def guard_sim(guard, input):
     x = guard[0]
     y = guard[1]
     while (True):
+        xxxxxxxxxxxxxxxxxxx = input[x+0][y-2:y] + [guard[2]] + input[x][y+1:y+3]
         unique_pos.add((x,y))
-        print(x,y)
         if guard[2] == 'v':
-            y += 1
-            guard = (x,y,guard[2])
-            if not guard_on_map(guard, input):
-                return len(unique_pos) 
-            if (input[x][y] == '#'):
-                guard = (x,y,'<')
-                
-        elif guard[2] == '<':
-            x -= 1
-            guard = (x,y,guard[2])
-            if not guard_on_map(guard, input):
-                return len(unique_pos) 
-            if (input[x][y] == '#'):
-                guard = (x,y,'^')
-                
-        elif guard[2] == '^':
-            y -= 1
-            guard = (x,y,guard[2])
-            if not guard_on_map(guard, input):
-                return len(unique_pos) 
-            if (input[x][y] == '#'):
-                guard = (x,y,'>')
-                
-        elif guard[2] == '>':
             x += 1
             guard = (x,y,guard[2])
             if not guard_on_map(guard, input):
                 return len(unique_pos) 
             if (input[x][y] == '#'):
+                x -=1
+                guard = (x,y,'<')
+                
+        elif guard[2] == '<':
+            y -= 1
+            guard = (x,y,guard[2])
+            if not guard_on_map(guard, input):
+                return len(unique_pos) 
+            if (input[x][y] == '#'):
+                y += 1
+                guard = (x,y,'^')
+                
+        elif guard[2] == '^':
+            x -= 1
+            guard = (x,y,guard[2])
+            if not guard_on_map(guard, input):
+                return len(unique_pos) 
+            if (input[x][y] == '#'):
+                x += 1
                 guard = (x,y,'>')
+                
+        elif guard[2] == '>':
+            y += 1
+            guard = (x,y,guard[2])
+            if not guard_on_map(guard, input):
+                return len(unique_pos) 
+            if (input[x][y] == '#'):
+                y -= 1
+                guard = (x,y,'v')
                 
 
 
