@@ -1,5 +1,5 @@
 from numpy import mat, matrix
-from input_fetcher import fetch_input
+from aoc_input_fetcher import fetch_input
 
 def main():
     input = fetch_input(__file__)

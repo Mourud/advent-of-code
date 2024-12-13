@@ -1,5 +1,5 @@
 from networkx import difference
-from input_fetcher import fetch_input
+from aoc_input_fetcher import fetch_input
 
 
 def main():

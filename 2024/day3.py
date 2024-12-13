@@ -1,5 +1,5 @@
 from ast import pattern
-from input_fetcher import fetch_input
+from aoc_input_fetcher import fetch_input
 import re
 
 def main():
