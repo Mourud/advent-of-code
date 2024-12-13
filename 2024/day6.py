@@ -1,5 +1,4 @@
 from aoc_input_fetcher import fetch_input
-from sympy import false
 
 
 def main():
@@ -79,11 +78,66 @@ def guard_on_map(guard, area):
         return False
     return True
 
+def guard_sim2(guard, input):
+    unique_pos = set()
+    y = guard[0]
+    x = guard[1]
+    dir = guard[2]
+    time_since_unique = 0
+    
+    while (True):
         
+        if time_since_unique > len(unique_pos):
+            return 1
+        xxxxxxxxxxxxxxxxxxx = input[y][x-2:x] + [dir] + input[y][x+1:x+3]
+        pos = (y,x)
+        if pos not in unique_pos:
+            time_since_unique = 0
+            unique_pos.add(pos)
+        else:
+            time_since_unique += 1
+        if dir == 'v':
+            y += 1
+            if not guard_on_map((y,x,dir), input):
+                return 0
+            if (input[y][x] == '#'):
+                y -=1
+                dir = '<'      
+        elif dir == '<':
+            x -= 1
+            if not guard_on_map((x,y,dir), input):
+                return 0
+            if (input[y][x] == '#'):
+                x += 1
+                dir = '^'
+        elif dir == '^':
+            y -= 1
+            if not guard_on_map((x,y,dir), input):
+                return 0
+            if (input[y][x] == '#'):
+                y += 1
+                dir = '>'
+        elif dir == '>':
+            x += 1
+            if not guard_on_map((x,y,dir), input):
+                return 0
+            if (input[y][x] == '#'):
+                x -= 1
+                dir = 'v'
+
+                
 
 
 
 def part2(input):
-    pass
+    guard = find_guard(input)
+    total = 0
+    for i, row in enumerate(input):
+        for j, pos in enumerate(row):
+            if pos not in ['v', '<', '>', '^', '#']:
+                input[i][j] = '#'
+                total += guard_sim2(guard, input)
 
+        
+    return total
 main()
