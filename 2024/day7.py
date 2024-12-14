@@ -28,11 +28,31 @@ def maths_is_possible(eq):
     def rec(nums, total):
         if len(nums) == 0:
             return total == res
-        return (rec(nums[1:], total=total+nums[0])) or rec(nums[1:], total*nums[0])
+        return (rec(nums[1:], total=total+nums[0])) or rec(nums[1:], total*nums[0]) 
 
     return rec(nums, 0)
     
 def part2(data):
-    pass
+    total = 0
+    for eq in data:
+        if maths_is_possible2(eq):
+            total += eq[1]
+    return total
 
+def maths_is_possible2(eq):
+    nums, res = eq
+
+    def rec(nums, total):
+        if len(nums) == 0:
+            return total == res
+        n = nums[0]
+        digits = 0
+        while(n != 0):
+            rem = n% 10
+            n //= 10 
+            digits += 1
+        multiplier = 10 ** digits
+      
+        return rec(nums[1:], total=total+nums[0]) or rec(nums[1:], total*nums[0])  or rec(nums[1:],  (total) * multiplier + nums[0])
+    return rec(nums, 0)
 main()
