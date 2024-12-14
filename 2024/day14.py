@@ -1,5 +1,3 @@
-import sys
-import time
 from aoc_input_fetcher import fetch_input
 import pygame
 # area = [11, 7]
@@ -88,14 +86,13 @@ def part2(data):
 
 
     # Precompute frames and store them in the `frames` list
-    for t in range(max_frames +1):
+    for t in range(max_frames):
         display = [[0 for _ in range(area[0])] for _ in range(area[1])]
         for robot in data:
             robot[:] = update(robot)
             x, y = robot[0]
             display[y][x] += 1
         frames.append(display)
-    timer = 0
     
     while running:
         for event in pygame.event.get():
@@ -109,7 +106,7 @@ def part2(data):
                 if event.key == pygame.K_SPACE:  # Pause/unpause
                     paused = not paused
         
-        text_surface = font.render(f"Time: {current_frame}", True, (255, 255, 255))
+        text_surface = font.render(f"Time: {101+current_frame}", True, (255, 255, 255))
         if not paused:
             current_frame = (current_frame + dir) % max_frames
 
@@ -134,15 +131,7 @@ def part2(data):
 
     # Quit pygame
     pygame.quit()
-
-    
-def render_in_place(lines):
-    # Move the cursor up for each line to be re-rendered
-    sys.stdout.write("\033[F" * len(lines))  # Move up `len(lines)` lines
-    for line in lines:
-        sys.stdout.write(f"\r{line}\n")  # Write the new line and move to the next
-    sys.stdout.flush()
-
+    return 7584
 
     
 main()
