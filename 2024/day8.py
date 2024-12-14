@@ -2,6 +2,7 @@ from aoc_input_fetcher import fetch_input
 
 def main():
     data = fetch_input(__file__)
+    # data = f"............\n........0...\n.....0......\n.......0....\n....0.......\n......A.....\n............\n............\n........A...\n.........A..\n............\n............"
     data = parse_data(data)
     print(part1(data))
     print(part2(data))
@@ -16,38 +17,38 @@ def part1(data):
     for i, row in enumerate(data):
         for j, antenna in enumerate(row):
             if antenna != '.':
-                antinodes.update( find_antinodes(i, j, data))
+                s = find_antinodes(i, j, data)
+                if (s):
+                    print(s)
+                antinodes.update(s)
     return len(antinodes)
 
 
 def find_antinodes(i, j, data):
-
     antinodes = set()
-
-    for index in range(j+1, len(data)):
-        if data[i][j] == data[i][index]:
-            print("HOR")
-            dist = index - j
-            if index + dist < len(data):
-                antinodes.add((i, index + dist) )# 2in - j
-            if j - dist >= 0:
-                antinodes.add((i, j - dist)) # 2j - in
-    for index in range(i+1, len(data)):
-        if data[i][j] == data[index][j]:
-            dist = index - i
-            if index + dist < len(data):
-                antinodes.add((index + dist, j))
-            if i - dist >= 0:
-                antinodes.add((i - dist, j))
-    for dist in range(len(data) - max(i,j)):
-        if data[i][j] == data[i+dist][j+dist]:
-
-            if i - dist >= 0 and j - dist >= 0:
-                antinodes.add((i- dist, j- dist))
-            if i + (2*dist) < len(data) and j + (2*dist) < len(data):
-                antinodes.add((i + (2*dist), j + (2*dist)))
-            
+    for x in range(i, len(data)):
+        for y in range(len(data)):
+            if x == i and y == j:
+                continue
+            if data[i][j] == data[x][y]:
+                v_dist = x - i
+                h_dist = y - j
+                an1 = (i - v_dist , j - h_dist)
+                if is_in_bounds(an1, len(data)):
+                    antinodes.add(an1)
+                an2 = (x + v_dist, y + h_dist)
+                if is_in_bounds(an2, len(data)):
+                    antinodes.add(an2)
+                     
     return antinodes
+
+def is_in_bounds(pos, size):
+    for p in pos:
+        if p < 0 or p >= size:
+            return False
+    return True
+            
+
 
 def part2(data):
     pass
