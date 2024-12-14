@@ -18,8 +18,6 @@ def part1(data):
         for j, antenna in enumerate(row):
             if antenna != '.':
                 s = find_antinodes(i, j, data)
-                if (s):
-                    print(s)
                 antinodes.update(s)
     return len(antinodes)
 
@@ -51,7 +49,34 @@ def is_in_bounds(pos, size):
 
 
 def part2(data):
-    pass
+    antinodes = set()
 
+    for i, row in enumerate(data):
+        for j, antenna in enumerate(row):
+            if antenna != '.':
+                s = find_antinodes_p2(i, j, data)
+                antinodes.update(s)
+    return len(antinodes)
+
+def find_antinodes_p2(i, j, data):
+    antinodes = set()
+    for x in range(i, len(data)):
+        for y in range(len(data)):
+            if x == i and y == j:
+                continue
+            if data[i][j] == data[x][y]:
+                v_dist = x - i
+                h_dist = y - j
+                an1 = [i  , j ]
+                while is_in_bounds(an1, len(data)):
+                    antinodes.add(tuple(an1))
+                    an1[0] -= v_dist
+                    an1[1] -= h_dist
+                an2 = [x , y ]
+                while is_in_bounds(an2, len(data)):
+                    antinodes.add(tuple(an2))
+                    an2[0] += v_dist
+                    an2[1] += h_dist
+    return antinodes
 
 main()
