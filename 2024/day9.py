@@ -1,5 +1,5 @@
 from aoc_input_fetcher import fetch_input
-
+# from send_answer import submit_answer
 
 def main():
     data = fetch_input(__file__)
@@ -56,6 +56,38 @@ def part1(data):
     return checksum.get_checksum()
 
 def part2(data):
-    pass
+    data_m = data
+    checksum = CheckSumCalulatorO()
+    end = len(data_m)-2
+    ids = [0] * (len(data) - 1)
+    for i in range(1, len(data)-1):
+        ids[i] = ids[i-1] + int(data[i-1])
+
+    while(end >= 0):
+        fsp = 1
+        point_to_add = end
+        while(fsp < end):
+            if int(data_m[fsp]) < int(data_m[end]):
+                fsp += 2
+            else:
+                point_to_add = fsp
+                break
+        fid = ids[point_to_add] + int(data[point_to_add]) - int(data_m[point_to_add])
+        checksum.calculate_checksum(int(data_m[end]), end // 2, fid)
+        data_m = data_m[:point_to_add] + str((int(data_m[point_to_add]) - int(data_m[end]))) + data_m[point_to_add+1:end]
+        end -= 2          
+    return checksum.get_checksum()
+
+class CheckSumCalulatorO:
+
+    def __init__(self):
+        self.checksum = 0
+
+    def calculate_checksum(self, iterations, num, id):
+        for _ in range(iterations):
+            self.checksum += (num*id)
+            id += 1
+    def get_checksum(self):
+        return self.checksum
 
 main()
