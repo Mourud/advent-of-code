@@ -1,4 +1,4 @@
-from copy import deepcopy
+from copy import Error, deepcopy
 from aoc_input_fetcher import fetch_input
 from traitlets import default
 
@@ -47,24 +47,22 @@ def find(obj_to_find, map_area):
                 obj_list.append((x,y))
     return obj_list
 
-def move_robot(rob, dir, map_area):
+def move_robot(pos, dir, map_area):
     moves = {'>': (1,0), '<' : (-1,0), '^': (0,1), 'v' : (0,-1)}
-    move_obj(ROBOT, rob, moves[dir], map_area)
-    
-    return map_area
+    curr_obj = ROBOT
+    updated_map_area = deepcopy(map_area)
+    curr_pos = pos
+    while(curr_obj == ROBOT or curr_obj == BOX):
+        x,y = tuple(a + b for a, b in zip(curr_pos, moves[dir]))
+        curr_obj = map_area[y][x] # can't think if this is always correct : double check
+        if map_area[y][x] == EMPTY:
+            return updated_map_area
+        if map_area[y][x] == WALL:
+            return map_area
+        updated_map_area[y][x] = curr_obj
+        curr_pos = x,y
+    raise Error("Unidentified Object")
 
-def move_obj(OBJ, pos, dir, map_area):
-    return
-    map_copy = deepcopy(map_area)
-    x, y = pos[0] + dir[0] , pos[1] + dir[1]
-    # match map_copy[m_y][m_x]:
-        # case EMPTY:
-        #     return map_copy
-        # case BOX:
-        #     map_copy[m_y][m_x] = OBJ
-        #     move_obj()
-        # case _:
-        #     return
     
 
 
